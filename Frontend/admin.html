@@ -24,19 +24,19 @@
                         <img class="logo" src="img/logo.png" alt="logo">
                         CompenStation
                     </button>
-                    <a class="regular-text" href="#">
+                    <a class="regular-text nav-link" data-target="dashboard" href="#">
                         <div class="side-icon">
                         <img src="icons/home_dark.svg" alt="home">
                         </div>
                         Dashboard
                     </a>
-                    <a class="regular-text" href="#">
+                    <a class="regular-text nav-link" data-target="employees" href="#">
                         <div class="side-icon">
                         <img src="icons/groups_dark.svg" alt="people">
                         </div>
                         Employees
                     </a>
-                    <a class="regular-text" href="#">
+                    <a class="regular-text nav-link" data-target="settings" href="#">
                         <div class="side-icon">
                         <img src="icons/settings_dark.svg" alt="gear">
                         </div>
@@ -197,12 +197,14 @@
 
                         <!--Benefits-->
                         <div class="benefits-panel">
-                            <h3 class="regular-text">Benefits</h3>
+                            <h3>Benefits</h3>
+                            <div class="panel-box">
+                                <ul id="benefitsList" class="item-list">
+                                </ul>
+                            </div>
 
-                            <!--benefits list-->
-                            <ul id="benefitsList" class="item-list">
-                            </ul>
                             <button class="btn-primary">Add benefit</button>
+
                             <div class="benefits-input">
                                 <label class="regular-text">Name</label>
                                 <input type="text">
@@ -214,14 +216,18 @@
                         <!--Taxes-->
                         <div class="taxes-panel">
                             <h3>State Tax</h3>
-                            <ul id="stateTaxList" class="item-list">
-                            </ul>
+                            <div class="panel-box">
+                                <ul id="stateTaxList" class="item-list">
+                                </ul>
+                            </div>
                             <button class="btn-primary">Add state tax</button>
                         </div>
                         <div class="taxes-panel">
                             <h3>Federal Tax</h3>
-                            <ul id="federalTaxList" class="item-list">
-                            </ul>
+                            <div class="panel-box">
+                                <ul id="federalTaxList" class="item-list">
+                                </ul>
+                            </div>
                             <button class="btn-primary">Add federal tax</button>
                         </div>
                     </div>
