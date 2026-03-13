@@ -20,30 +20,30 @@
         <aside>
             <nav>
                 <div>
-                    <button class="menu-toggle regular-text">
+                    <button id="menuToggleBtn" class="menu-toggle regular-text">
                         <img class="logo" src="img/logo.png" alt="logo">
                         CompenStation
                     </button>
-                    <a class="regular-text nav-link" data-target="dashboard" href="#">
+                    <a id="navItem" class="regular-text nav-link" data-target="dashboard" href="#">
                         <div class="side-icon">
                         <img src="icons/home_dark.svg" alt="home">
                         </div>
                         Dashboard
                     </a>
-                    <a class="regular-text nav-link" data-target="employees" href="#">
+                    <a id="navItem" class="regular-text nav-link" data-target="employees" href="#">
                         <div class="side-icon">
                         <img src="icons/groups_dark.svg" alt="people">
                         </div>
                         Employees
                     </a>
-                    <a class="regular-text nav-link" data-target="settings" href="#">
+                    <a id="navItem" class="regular-text nav-link" data-target="settings" href="#">
                         <div class="side-icon">
                         <img src="icons/settings_dark.svg" alt="gear">
                         </div>
                         Settings
                     </a>
                 </div>
-                <a class="regular-text" href="index.html">
+                <a id="navItem" class="regular-text" href="index.html">
                     <div class="side-icon">
                     <img src="icons/logout_dark.svg">
                     </div>
@@ -59,7 +59,7 @@
             <section id="dashboard" class="page">
 
                 <div class="outline-container-header">
-                    <button class="btn-secondary">Run payroll</button>
+                    <button id="runPayrollBtn" class="btn-secondary">Run payroll</button>
                 </div>
 
                 <!--Main box outline container-->
@@ -132,28 +132,33 @@
             <section id="employees" class="page">
                 
                 <div class="outline-container">
-                    <div class="search-and-add-employee">
-                        <div class="search-bar">
-                            <input type="search" placeholder="search employees">
+                    <div class="outline-box-bg">
+                        <div class="search-and-add-employee">
+                            <div id="seachEmployees" class="search-bar">
+                                <input type="search" placeholder="search employees">
+                            </div>
+                            <button class="btn-primary">Add employee</button>
                         </div>
-                        <button class="btn-primary">Add employee</button>
                     </div>
 
-                    <!--List-->
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Pay</th>
-                                <th>Role</th>
-                                <th>Hours</th>
-                                <th>Pay date</th>
-                            </tr>
-                        </thead>
-                        <tbody id="employeeList">
-                            <!--javascript goes here-->
-                        </tbody>
-                    </table>
+                    <div class="table-scroll">
+                        <!--List-->
+                        <table id="employeeTable">
+                            <thead>
+                                <tr id="rowHeader">
+                                    <th>Name</th>
+                                    <th>Pay</th>
+                                    <th>Role</th>
+                                    <th>Hours</th>
+                                    <th>Pay date</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="employeeTableBody">
+                                <!--javascript goes here-->
+                            </tbody>
+                        </table>
+                    </div>
                 </div> 
             </section>
 
@@ -161,10 +166,10 @@
             <section id="addEmployee" class="page">
                 <div class="outline-container">
                         <!--Employee info-->
-                    <form class="employee-info">
-                        <input type="text" placeholder="First name">
+                    <form id="addEmployeeForm" class="employee-info">
+                        <input id="firstNameInput" type="text" placeholder="First name">
                         <input type="text" placeholder="Middle name (optional)">
-                        <input type="text" placeholder="Last name">
+                        <input id="LastNameInput" type="text" placeholder="Last name">
                         <input type="date" placeholder="Birth date">
                         <select name="sex" id="sex">
                             <option value="male">Male</option>
@@ -172,7 +177,7 @@
                         </select>
                         <input type="text" placeholder="Employee ID">
                         <input type="email" placeholder="Email">
-                        <input type="text" placeholder="Salary">
+                        <input id="salaryInput" type="text" placeholder="Salary">
                         <select id="payFrequency" class="input-select"></select>
                         <input type="text" placeholder="Address">
                         <input type="text" placeholder="City">
@@ -180,7 +185,7 @@
                         <input type="text" placeholder="ZIP">
                         <input type="tel" placeholder="Phone" pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}">
                         <input type="password" placeholder="SSN">
-                        <input type="text" placeholder="Job title">
+                        <input id="roleInput" type="text" placeholder="Job title">
                         <select id="benefitSelect" class="input-select" multiple></select>
                         <div class="add-employee-footer">
                             <button class="btn-tertiary">Cancel</button>
@@ -200,6 +205,10 @@
                             <h3>Benefits</h3>
                             <div class="panel-box">
                                 <ul id="benefitsList" class="item-list">
+                                    <li class="list-item">Medical<button class="remove"><img src="icons/close_light.svg" alt="Remove"></button>
+                                    </li>
+                                    <li class="list-item">Dental<button class="remove"><img src="icons/close_light.svg" alt="Remove"></button></li>
+                                    <li class="list-item">401(k)<button class="remove"><img src="icons/close_light.svg" alt="Remove"></button></li>
                                 </ul>
                             </div>
 
@@ -237,6 +246,6 @@
         </main>
 
         <!--JavaScript-->
-        <script src="js/scripts.js"></script>
+        <script src="js/scripts.js"></script> 
     </body>
 </html>
