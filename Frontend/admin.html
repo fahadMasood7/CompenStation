@@ -171,6 +171,7 @@
             <!--Add Employee screen-->
             <section id="addEmployee" class="page">
                 <div class="outline-container">
+                    <div class="employee-form-scroll">
                         <!--Employee info-->
                     <form id="addEmployeeForm" class="employee-info">
                         <input id="firstNameInput" type="text" placeholder="First name">
@@ -249,12 +250,13 @@
                         <input id="roleInput" type="text" placeholder="Job title">
                         <div id="benefitsCheckboxes" class="benefits-selection">
                             <!--populated by javascript-->
-                        </div>
-                        <div class="add-employee-footer">
-                            <button class="btn-tertiary" type="button">Cancel</button>
-                            <button class="btn-primary" type="submit">Add</button>
-                        </div>
+                        </div>   
                     </form>
+                    </div>
+                    <div class="add-employee-footer">
+                        <button class="btn-tertiary" type="button">Cancel</button>
+                        <button class="btn-primary" form="addEmployeeForm" type="submit">Add</button>
+                    </div>
                 </div>
             </section>
 
@@ -317,8 +319,8 @@
         <script src="js/scripts.js"></script>
 
         <!--
-        <script src="js/admin-dashboard.js"></script>
-        <script src="js/api-service.js"></script>
-    -->
+            <script src="js/admin-dashboard.js"></script>
+            <script src="js/api-service.js"></script>
+        -->
     </body>
 </html>
