@@ -6,7 +6,7 @@
     <title>CompenStation - Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Merriweather:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="css/testemployeecss.css">
+    <link rel="stylesheet" href="css/newemployee.css">
     
 </head>
 <body>
@@ -17,10 +17,14 @@
             <span class="brand-name serif">CompenStation</span>
         </div>
         <div class="header-tab">Dashboard</div>
-        <div class="user-nav">
+        <div class="user-nav" onclick="toggleDropdown()">
             <div class="nav-avatar serif" id="navInitials">JD</div>
             <span id="navName">John Doe</span>
             <i class='bx bx-chevron-down'></i>
+            
+            <div id="userDropdown" class="dropdown-content">
+                <a href="#" onclick="logout()">Logout</a>
+            </div>
         </div>
     </header>
 
@@ -47,6 +51,21 @@
                 </div>
             </div>
 
+            <div id="benefitsModal" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal" onclick="toggleModal('benefitsModal', false)">&times;</span>
+                    <h3 class="serif">Select Benefits</h3>
+                    
+                    <div id="benefitsContainer" style="margin-bottom: 20px;">
+                        </div>
+                    
+                    <div style="margin-bottom: 20px; font-weight: 600; color: var(--header-dark);">
+                        Estimated Monthly Cost: <span id="pricePreview">$0.00</span>
+                    </div>
+                    <button class="btn-black" onclick="submitBenefits()">Save Selection</button>
+                </div>
+            </div>
+
             <div class="card">
                 <h3 class="card-title">Employee Portal</h3>
                 <button class="portal-btn" onclick="generateFile('Paystub.txt', 'Paystub Data...')">
@@ -61,6 +80,11 @@
                 <button class="portal-btn" onclick="toggleModal('updateInfoModal', true)">
                     <i class='bx bx-user'></i> Update Personal Info
                 </button>
+                <button class="portal-btn" onclick="toggleModal('benefitsModal', true)">
+                    <i class='bx bx-plus-circle'></i> Manage Benefits
+                </button>
+
+
             </div>
         </aside>
 
@@ -80,6 +104,11 @@
                 <h3 class="card-title">Current Pay Period (Jan 20 - Feb 02, 2026)</h3>
                 <div class="pay-row"><span>Hours Worked</span><span id="calcHours" style="font-weight:600;">80 hours</span></div>
                 <div class="pay-row"><span>Gross Pay</span><span id="calcGross" style="font-weight:600;">$5000.00</span></div>
+
+
+                <div class="pay-row deduction" id="benefitsRow" style="display:none;">
+                    <span>Benefits Deduction</span><span class="val-red" id="calcBenefits">-$0.00</span>
+                </div>
                 
                 <div class="pay-row deduction"><span>Federal Tax</span><span class="val-red" id="calcFed">-$1100.00</span></div>
                 <div class="pay-row deduction"><span>State Tax</span><span class="val-red" id="calcState">-$400.00</span></div>
@@ -119,7 +148,7 @@
     </div>
 
     <div id="toast" class="toast"><i class='bx bxs-check-circle' style="color:#16a34a; font-size:1.2rem;"></i> <span id="toastText">Success</span></div>
-    <script src="js/testemployeejs.js"></script>
+    <script src="js/newemployee.js"></script>
 
 </body>
 </html>
