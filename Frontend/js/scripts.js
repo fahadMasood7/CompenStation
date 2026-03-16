@@ -291,3 +291,17 @@ document.getElementById("employeeTableBody").addEventListener("click", (e) => {
         showPage("addEmployee");
     }
 });
+
+/* Show addEmployee page when "Edit" button is clicked on employee
+and populate fields with that employee's info */
+
+/*  WILL COME BACK TO THIS
+document.querySelectorAll(".edit-btn").addEventListener("click", (e) => {
+    showPage("#addEmployee");
+    const fields = document.querySelector("#addEmployeeForm");
+    const employeeFields = [];
+    for(field in employeeFields) {
+        employeeFields.push(field);
+    }
+})
+    */

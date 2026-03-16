@@ -225,7 +225,7 @@ td {
 }
 
 tr:not(#rowHeader):hover {
-    background-color: var(--lightGreen);
+   /* background-color: var(--lightGreen); */
 }
 
 th {
