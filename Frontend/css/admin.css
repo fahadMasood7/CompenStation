@@ -23,6 +23,14 @@
     flex-direction: column; 
     display: none;
 }
+
+#editEmployee {
+    height: calc(100vh - var(--headerHeight));
+    display: flex;
+    flex-direction: column; 
+    display: none;
+}
+
 #settings {
     display: flex;
     flex-direction: column; 
@@ -247,6 +255,7 @@ th {
 .run-payroll-footer {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     margin-top: auto;
 }
 
@@ -255,7 +264,6 @@ th {
     flex-direction: row;
     justify-content: space-between;
     width: 15%;
-    margin-left: 65%;
 }
 
 .search-and-add-employee {

@@ -172,6 +172,11 @@ document.querySelector("#addEmployee .btn-tertiary").addEventListener("click", (
     showPage("employees");
     loadEmployees();
 });
+// Cancel on Edit Employee goes back to employees list
+document.querySelector("#editEmployee .btn-tertiary").addEventListener("click", () => {
+    showPage("employees");
+    loadEmployees();
+});
 
 // ─── API: Load Employees ────────────────────────────────────────────────────
 async function loadEmployees() {
@@ -257,7 +262,8 @@ document.querySelector("#runPayroll .btn-tertiary").addEventListener("click", ()
 function addRow(employee) {
     const row = document.createElement('tr');
     row.innerHTML = `<td>${employee.name}</td><td>${employee.pay}</td><td>${employee.role}</td>
-    <td>${employee.hours}</td><td>${employee.payDate}</td><td><button class="button edit-btn">Edit</button>
+    <td>${employee.hours}</td><td>${employee.payDate}</td><td><button id="editEmployeeBtn" class="button edit-btn">
+    Edit</button>
     </td>`;
     document.getElementById("employeeTableBody").appendChild(row);
 };
@@ -279,29 +285,17 @@ document.getElementById("addEmployeeForm").addEventListener('submit', function(e
     employees.push(newEmployee);
     addRow(newEmployee);
     this.reset();
-})
-
-// Updates employee list as user enters more characters in the search bar
-const search = document.getElementById("searchEmployees");
+});
 
 // Edit Employee button
 document.getElementById("employeeTableBody").addEventListener("click", (e) => {
     if (e.target.classList.contains("edit-btn")) {
         renderBenefitsCheckboxes();
-        showPage("addEmployee");
+        showPage("editEmployee");
     }
 });
 
-/* Show addEmployee page when "Edit" button is clicked on employee
-and populate fields with that employee's info */
+// Edit Employee page
+const editButton = document.querySelector("#editEmployee");
 
-/*  WILL COME BACK TO THIS
-document.querySelectorAll(".edit-btn").addEventListener("click", (e) => {
-    showPage("#addEmployee");
-    const fields = document.querySelector("#addEmployeeForm");
-    const employeeFields = [];
-    for(field in employeeFields) {
-        employeeFields.push(field);
-    }
-})
-    */
+
