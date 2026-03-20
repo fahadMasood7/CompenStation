@@ -1,8 +1,3 @@
-// demo.js
-// Demo server using the real algorithms with an in-memory store.
-// Run with: node demo.js
-// No database needed — great for midterm demos and frontend development.
-
 const express = require("express");
 const cors    = require("cors");
 const { makeMemoryStore } = require("./Store/storeMemory");
@@ -26,8 +21,6 @@ app.use(express.json());
 const store = makeMemoryStore();
 
 // ================================================================
-// AUTH MIDDLEWARE
-// Token format (base64-encoded JSON): { id, role }
 // role is either "admin" or "employee"
 // ================================================================
 function auth(req, res, next) {
@@ -66,25 +59,39 @@ app.post("/api/login", (req, res) => {
 
 // ================================================================
 // REGISTER
-// POST /api/register  { fullName, email, phone, username, password, role, employeeId, jobTitle }
+// POST /api/register  { fullName, email, phone, username, password, role, employeeId, jobTitle, hourlyRate }
 // Returns a token and user object (same as login)
 // ================================================================
 app.post("/api/register", async (req, res) => {
   try {
-    const { fullName, email, phone, username, password, role = "employee", employeeId, jobTitle } = req.body;
+    const { 
+      fullName, 
+      email, 
+      phone, 
+      username, 
+      password, 
+      role = "employee", 
+      employeeId, 
+      jobTitle,
+      hourlyRate,
+      department,
+      address
+    } = req.body;
     
     // Validation
     if (!fullName || !email || !username || !password) {
       return res.status(400).json({ message: "Missing required fields: fullName, email, username, password" });
     }
 
-    // For demo purposes, we'll create an employee record
+    // Prepare employee data - FIXED: Added hourlyRate with default value
     const employeeData = {
       fullName,
       email,
-      phone,
-      jobTitle: jobTitle || "Employee",
-      employeeId: employeeId || `EMP${Date.now()}`,
+      phone: phone || null,
+      address: address || null,
+      department: department || "General",
+      jobTitle: jobTitle || (role === "admin" ? "Administrator" : "Employee"),
+      hourlyRate: hourlyRate ? parseFloat(hourlyRate) : 0, // FIXED: Default to 0 if not provided
       isActive: true,
     };
 
@@ -356,9 +363,9 @@ app.get("/api/debug/dump", (req, res) => {
 // ================================================================
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`\n🚀 Demo server running at http://localhost:${PORT}`);
+  console.log(`\n Demo server running at http://localhost:${PORT}`);
   console.log(`   In-memory store — no database needed. Data resets on restart.\n`);
-  console.log("📋 QUICK DEMO STEPS:");
+  console.log("QUICK DEMO STEPS:");
   console.log("   1) POST /api/login             { username, role, id }");
   console.log("   2) POST /api/register          { fullName, email, username, password, role }");
   console.log("   3) POST /api/admin/employees   Add employee");

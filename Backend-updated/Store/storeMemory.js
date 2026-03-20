@@ -182,10 +182,17 @@ function makeMemoryStore() {
       payrollLines.push(line);
       return line;
     },
-    async createPaystub({ employeeId, payrollRunId, grossPay, totalDeductions, netPay }) {
+    // FIXED: Added periodStart and periodEnd to paystubs
+    async createPaystub({ employeeId, payrollRunId, periodStart, periodEnd, grossPay, totalDeductions, netPay }) {
       const stub = {
-        id: id(), employeeId, payrollRunId,
-        grossPay, totalDeductions, netPay,
+        id: id(), 
+        employeeId, 
+        payrollRunId,
+        periodStart,  // FIXED: Added this field
+        periodEnd,    // FIXED: Added this field
+        grossPay, 
+        totalDeductions, 
+        netPay,
         issuedAt: new Date().toISOString(),
       };
       paystubs.push(stub);

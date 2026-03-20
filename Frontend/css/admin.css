@@ -181,7 +181,6 @@ main {
     border: 2px solid var(--darkerGreen);
     overflow: hidden;
     padding: 15px;
-    width: 65%;
 }
 
 .outline-container > form > input, select {
@@ -257,13 +256,14 @@ th {
     flex-direction: row;
     justify-content: space-between;
     margin-top: auto;
+    width: 100%;
 }
 
 .cancel-submit {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    width: 15%;
+    width: 100%;
 }
 
 .search-and-add-employee {

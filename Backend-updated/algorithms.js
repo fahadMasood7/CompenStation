@@ -235,7 +235,7 @@ async function getEmployeeBenefits(store, employeeId) {
 // ================================================================
 
 /**
- * Add a tax/deduction to an employee
+ * Add a deduction to an employee
  */
 async function addDeduction(store, { employeeId, deductionType, label, isPercentage, amount, isActive, notes }) {
   assert(employeeId != null, "employeeId required");
@@ -424,9 +424,12 @@ async function runPayroll(store, { periodStart, periodEnd, executedBy }) {
       netPay:          item.netPay,
     });
 
+    // FIXED: Added periodStart and periodEnd to paystub creation
     await store.createPaystub({
       employeeId:      item.emp.id,
       payrollRunId:    payrollRun.id,
+      periodStart:     payrollRun.periodStart,   // FIXED: Added this
+      periodEnd:       payrollRun.periodEnd,     // FIXED: Added this
       grossPay:        item.grossPay,
       totalDeductions: item.totalDeductionsForEmp,
       netPay:          item.netPay,
@@ -449,10 +452,10 @@ async function runPayroll(store, { periodStart, periodEnd, executedBy }) {
 
   return {
     payrollRun,
-    count:      computed.length,
+    employeeCount:  computed.length,
     totalGross: runGross,
     totalDeductions: runDeductions,
-    totalNet:   runNet,
+    totalNetPay:   runNet,
     lines,
   };
 }
