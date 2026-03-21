@@ -71,9 +71,9 @@
                             <p class="regular-text">Employees</p>
                             <p class="large-text card-info">24</p>
                         </div>
-                        <div class="content-card">
+                        <div id="dashboardTotalPayCard" class="content-card">
                             <p class="regular-text">Total pay</p>
-                            <p class="large-text card-info">$23,140</p>
+                            <p id="dashboardTotalPay" class="large-text card-info">$23,140</p>
                         </div>
                         <div class="content-card">
                             <p class="regular-text">Pending</p>
@@ -89,7 +89,7 @@
                         </div>
                         <div class="content-card">
                             <p class="regular-text">Requests</p>
-                            <p class="large-text card-info">2</p>
+                            <p class="large-text card-info">0</p>
                         </div>
                     </div>
 
@@ -123,8 +123,10 @@
                         </tbody>
                     </table>
                     <div class="run-payroll-footer">
-                        <p class="regular-text">Total pay: $</p>
-                        <p id="totalPayrollAmount" class="regular-text"></p>
+                        <div class="payroll-total">
+                            <p class="regular-text">Total pay:</p>
+                            <p id="totalPayrollAmount" class="regular-text">$0.00</p>
+                        </div>
 
                         <div class="cancel-submit">
                             <button class="btn-tertiary">Cancel</button> 
@@ -409,6 +411,7 @@
         </main>
 
         <!--JavaScript-->
+        <script src="js/sampleData.js"></script>
         <script src="js/adminMain.js"></script>
         <script src="js/adminDashboard.js"></script>
         <script src="js/adminEmployees.js"></script>

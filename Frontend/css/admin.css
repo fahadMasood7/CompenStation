@@ -244,6 +244,22 @@ th {
     background-color: white;
 }
 
+.employee-actions-cell {
+    text-align: right;
+}
+
+.employee-row-actions {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+}
+
+.employee-row-actions button {
+    margin: 0;
+}
+
 .edit-btn {
     background-color: lightgray;
     width: 100px;
@@ -251,19 +267,35 @@ th {
     color: var(--darkerGreen);
 }
 
+.remove-employee-btn {
+    background-color: var(--red);
+    width: 100px;
+    height: 25px;
+    color: white;
+}
+
 .run-payroll-footer {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
+    gap: 20px;
     margin-top: auto;
     width: 100%;
+}
+
+.payroll-total {
+    display: flex;
+    align-items: center;
+    gap: 6px;
 }
 
 .cancel-submit {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    width: 100%;
+    justify-content: flex-end;
+    gap: 20px;
+    margin-left: auto;
 }
 
 .search-and-add-employee {

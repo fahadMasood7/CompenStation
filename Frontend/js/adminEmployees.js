@@ -1,26 +1,46 @@
 // Everything that happens on the Employees page of the admin
 
+const employeeTableBody = document.getElementById("employeeTableBody");
+const runPayrollList = document.getElementById("runPayrollList");
+const totalPayrollAmount = document.getElementById("totalPayrollAmount");
+const dashboardTotalPay = document.getElementById("dashboardTotalPay");
+const addEmployeeForm = document.querySelector("#addEmployeeForm");
+
+let nextLocalEmployeeId = 1;
+let currentEmployees = employees.map(createSampleEmployeeRecord);
+
 // ---Adding an employee---
 document.querySelector("#employees .btn-primary").addEventListener("click", () => {
     showPage("addEmployee");
     renderBenefitsCheckboxes();
 });
 
-// submitting the 'add employee' form
-const addEmployeeForm = document.querySelector("#addEmployeeForm");
-addEmployeeForm.addEventListener('submit', event => {
+addEmployeeForm.addEventListener("submit", async event => {
     event.preventDefault();
-    const fullName = (document.getElementById("firstNameInput").value + " " +
-                      document.getElementById("LastNameInput").value).trim();
-    const email = document.getElementById("emailInput").value;
-    const hourlyRate = document.getElementById("salaryInput").value;
-    fetch(`${API}/employees`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ fullName, email, hourlyRate })
-    }).then(res => res.json())
-      .then(data => console.log(data))
-      .catch(error => console.log(error));
+
+    const newEmployee = createFormEmployeeRecord();
+    currentEmployees.push(newEmployee);
+    renderEmployeeViews();
+    addEmployeeForm.reset();
+
+    try {
+        const response = await fetch(`${API}/employees`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                fullName: newEmployee.name,
+                email: newEmployee.email,
+                hourlyRate: newEmployee.hourlyRate,
+                jobTitle: newEmployee.role === "—" ? null : newEmployee.role,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Failed to save employee: ${response.status}`);
+        }
+    } catch (error) {
+        console.error("Failed to save employee:", error);
+    }
 });
 
 // ─── Benefits Checkboxes (employee form) ────────────────────────────────────
@@ -46,73 +66,168 @@ document.querySelector("#editEmployee .btn-tertiary").addEventListener("click", 
     loadEmployees();
 });
 
+function createSampleEmployeeRecord(employee) {
+    return {
+        id: `sample-${nextLocalEmployeeId++}`,
+        name: employee.name,
+        payAmount: parsePayAmount(employee.pay),
+        payLabel: employee.pay.startsWith("$") ? employee.pay : `$${employee.pay}`,
+        role: employee.role || "—",
+        hours: employee.hours || "—",
+        payDate: employee.payDate || "—",
+    };
+}
+
+function createApiEmployeeRecord(employee) {
+    const hourlyRate = Number(employee.hourlyRate || 0);
+
+    return {
+        id: employee.id ?? `api-${nextLocalEmployeeId++}`,
+        name: employee.fullName || "—",
+        payAmount: hourlyRate,
+        payLabel: `$${formatNumber(hourlyRate)}/hr`,
+        role: employee.jobTitle || "—",
+        hours: "—",
+        payDate: "—",
+    };
+}
+
+function createFormEmployeeRecord() {
+    const fullName = `${document.getElementById("firstNameInput").value} ${document.getElementById("LastNameInput").value}`.trim() || "—";
+    const salary = Number(document.getElementById("salaryInput").value);
+    const payAmount = Number.isFinite(salary) ? Math.floor(salary / 26) : 0;
+    const role = document.getElementById("roleInput").value.trim() || "—";
+
+    return {
+        id: `local-${nextLocalEmployeeId++}`,
+        name: fullName,
+        payAmount,
+        payLabel: `$${formatNumber(payAmount, 0, 2)}`,
+        role,
+        hours: "—",
+        payDate: "—",
+        email: document.getElementById("emailInput").value.trim(),
+        hourlyRate: document.getElementById("salaryInput").value,
+    };
+}
+
+function parsePayAmount(value) {
+    const parsed = Number(String(value).replace(/[^0-9.-]/g, ""));
+    return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function formatNumber(value, minimumFractionDigits = 2, maximumFractionDigits = 2) {
+    return Number(value).toLocaleString("en-US", {
+        minimumFractionDigits,
+        maximumFractionDigits,
+    });
+}
+
+function getEmployeeActionsMarkup() {
+    return `<td class="employee-actions-cell"><div class="employee-row-actions"><button class="button edit-btn">
+    Edit</button><button class="remove-employee-btn">Remove</button></div>
+    </td>`;
+}
+
+function renderEmployeeTable() {
+    employeeTableBody.innerHTML = "";
+
+    if (!currentEmployees.length) {
+        employeeTableBody.innerHTML = `<tr><td colspan="6" style="text-align:center;">No employees found</td></tr>`;
+        return;
+    }
+
+    currentEmployees.forEach(employee => {
+        const row = document.createElement("tr");
+        row.dataset.employeeId = String(employee.id);
+        row.innerHTML = `
+            <td>${employee.name}</td>
+            <td>${employee.payLabel}</td>
+            <td>${employee.role}</td>
+            <td>${employee.hours}</td>
+            <td>${employee.payDate}</td>
+            ${getEmployeeActionsMarkup()}
+        `;
+        employeeTableBody.appendChild(row);
+    });
+}
+
+function renderRunPayrollList() {
+    runPayrollList.innerHTML = "";
+
+    if (!currentEmployees.length) {
+        runPayrollList.innerHTML = `<tr><td colspan="3" style="text-align:center;">No employees found</td></tr>`;
+        updateTotalPayDisplays();
+        return;
+    }
+
+    currentEmployees.forEach(employee => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>${employee.name}</td>
+            <td>${employee.payLabel}</td>
+            <td>${employee.hours}</td>
+        `;
+        runPayrollList.appendChild(row);
+    });
+
+    updateTotalPayDisplays();
+}
+
+function updateEmployeeCount() {
+    document.querySelector("#employeeCount .card-info").textContent = String(currentEmployees.length);
+}
+
+function updateTotalPayDisplays() {
+    const totalPay = currentEmployees.reduce((sum, employee) => sum + employee.payAmount, 0);
+    const formattedTotal = `$${formatNumber(totalPay)}`;
+
+    totalPayrollAmount.textContent = formattedTotal;
+    dashboardTotalPay.textContent = formattedTotal;
+}
+
+function renderEmployeeViews() {
+    renderEmployeeTable();
+    renderRunPayrollList();
+    updateEmployeeCount();
+}
+
 // ─── API: Load Employees ────────────────────────────────────────────────────
 async function loadEmployees() {
     try {
-        const res = await fetch(`${API}/employees`);
-        const employees = await res.json();
-        const tbody = document.getElementById("employeeTableBody");
-        tbody.innerHTML = "";
+        const response = await fetch(`${API}/employees`);
 
-        if (employees.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">No employees found</td></tr>`;
-            return;
+        if (!response.ok) {
+            throw new Error(`Failed to load employees: ${response.status}`);
         }
 
-        employees.forEach(emp => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-                <td>${emp.fullName}</td>
-                <td>$${Number(emp.hourlyRate).toFixed(2)}/hr</td>
-                <td>—</td>
-                <td>—</td>
-                <td>—</td>
-            `;
-            tbody.appendChild(tr);
-        });
+        const apiEmployees = await response.json();
+        currentEmployees = apiEmployees.map(createApiEmployeeRecord);
     } catch (err) {
         console.error("Failed to load employees:", err);
     }
+
+    renderEmployeeViews();
 }
 
-// Add Employee---------------------------------------------------------- 
+// Edit/Remove employee buttons
+employeeTableBody.addEventListener("click", event => {
+    const editButton = event.target.closest(".edit-btn");
+    const removeButton = event.target.closest(".remove-employee-btn");
 
-// after add employee submission
-function addRow(employee) {
-    const row = document.createElement('tr');
-    row.innerHTML = `<td>${employee.name}</td><td>${employee.pay}</td><td>${employee.role}</td>
-    <td>${employee.hours}</td><td>${employee.payDate}</td><td><button id="editEmployeeBtn" class="button edit-btn">
-    Edit</button>
-    </td>`;
-    document.getElementById("employeeTableBody").appendChild(row);
-};
-
-// Populate table with sample data
-//employees.forEach(addRow);
-
-document.getElementById("addEmployeeForm").addEventListener('submit', function(e) {
-    e.preventDefault();
-    const newEmployee = {
-        name: document.getElementById("firstNameInput").value + " " +
-              document.getElementById("LastNameInput").value,
-
-        // pay = salary/26 payments(bi-weekly)
-        pay: Math.floor(document.getElementById("salaryInput").value / 26),
-        role: document.getElementById("roleInput").value,
-    };
-
-    employees.push(newEmployee);
-    addRow(newEmployee);
-    this.reset();
-});
-
-// Edit Employee button
-document.getElementById("employeeTableBody").addEventListener("click", (e) => {
-    if (e.target.classList.contains("edit-btn")) {
+    if (editButton) {
         renderBenefitsCheckboxes();
         showPage("editEmployee");
+        return;
+    }
+
+    if (removeButton) {
+        const row = removeButton.closest("tr");
+        const employeeId = row?.dataset.employeeId;
+
+        currentEmployees = currentEmployees.filter(employee => String(employee.id) !== employeeId);
+        renderEmployeeViews();
     }
 });
 
-// Edit Employee page
-const editButton = document.querySelector("#editEmployee");
+renderEmployeeViews();

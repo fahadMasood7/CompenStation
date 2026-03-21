@@ -8,6 +8,9 @@ const employees = [
     },
     {name: "Tasnim Hanaif", pay: "2,450", role: "Front-end Engineer",
         hours: "50", payDate: "March 20"
+    },
+    {name: "Mike Doey", pay: "3,000", role: "DevOps",
+        hours: "58", payDate: "March 20"
     }
 ];
 
