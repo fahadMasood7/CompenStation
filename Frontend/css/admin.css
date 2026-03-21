@@ -169,6 +169,25 @@ main {
     border: 2px solid lightgray;
 }
 
+.payroll-history {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    border: 2px solid lightgray;
+    margin-top: 20px;
+    padding: 15px;
+    overflow: hidden;
+}
+
+.payroll-history-table {
+    margin-top: 15px;
+}
+
+.payroll-history-empty td {
+    padding-bottom: 10px;
+}
+
 /*Outlined box with main content*/
 .outline-container {
     display: flex;
