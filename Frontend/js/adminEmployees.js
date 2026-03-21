@@ -6,6 +6,23 @@ document.querySelector("#employees .btn-primary").addEventListener("click", () =
     renderBenefitsCheckboxes();
 });
 
+// submitting the 'add employee' form
+const addEmployeeForm = document.querySelector("#addEmployeeForm");
+addEmployeeForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const fullName = (document.getElementById("firstNameInput").value + " " +
+                      document.getElementById("LastNameInput").value).trim();
+    const email = document.getElementById("emailInput").value;
+    const hourlyRate = document.getElementById("salaryInput").value;
+    fetch(`${API}/employees`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ fullName, email, hourlyRate })
+    }).then(res => res.json())
+      .then(data => console.log(data))
+      .catch(error => console.log(error));
+});
+
 // ─── Benefits Checkboxes (employee form) ────────────────────────────────────
 function renderBenefitsCheckboxes() {
     const container = document.getElementById("benefitsCheckboxes");
